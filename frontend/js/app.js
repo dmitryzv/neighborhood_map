@@ -98,6 +98,14 @@ var map;
 var service;
 var infowindow;
 
+function searchAndCreateMapMarker(request, businessId) {
+    service.nearbySearch(request, function(result, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            createMapMarker(result, businessId);
+        }
+    });
+};
+
 function initialize() {
     var boulder = new google.maps.LatLng(40.0274, -105.2519);
 
@@ -117,13 +125,8 @@ function initialize() {
             radius: '3000',
             name: placeName
         };
-
-        service.nearbySearch(request, function(result, status) {
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                createMapMarker(result, businessId);
-            }
-        });
-    };
+        
+        searchAndCreateMapMarker(request, businessId);
 };
 
 function createMapMarker(searchResults, businessId) {
